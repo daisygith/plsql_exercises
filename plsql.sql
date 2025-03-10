@@ -184,3 +184,81 @@ BEGIN
     CLOSE c_department;
 END;
 /
+
+--8. Write a PL/SQL program to display the total salary expense for each department. Return depart name and salary expenses in tabular form.
+
+DECLARE 
+v_department_name departments.department_name%type;
+v_department_id departments.department_id%type;
+
+v_salary NUMBER;
+v_total_salary NUMBER;
+v_employee_count NUMBER;
+
+CURSOR c_department IS
+        SELECT department_id, department_name FROM departments
+        order by department_id;
+CURSOR c_salary (p_department_id IN departments.department_id%TYPE) IS
+		SELECT e.money FROM employees e
+        WHERE e.department_code = p_department_id;
+
+BEGIN 
+
+  DBMS_OUTPUT.PUT_LINE('DEPARTMENT ID' || CHR(9) ||'DEPARTMENT NAME' || CHR(9) || 'Salary EXPENSE');
+  DBMS_OUTPUT.PUT_LINE('-----------------------------------');
+  OPEN c_department;
+  FETCH c_department INTO v_department_id,v_department_name;
+  WHILE c_department%FOUND LOOP
+    v_total_salary := 0;
+    v_salary := 0;
+    v_employee_count :=0;
+    
+    OPEN c_salary(v_department_id);
+    FETCH c_salary INTO v_salary;
+        WHILE c_salary%FOUND LOOP
+            v_total_salary := v_total_salary + v_salary;
+            v_employee_count := v_employee_count + 1;
+        FETCH c_salary INTO v_salary;
+        END LOOP;
+    CLOSE c_salary;
+        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_total_salary);
+        FETCH c_department INTO v_department_id,v_department_name;
+  END LOOP;
+  CLOSE c_department;
+
+END;
+/
+
+--9. Write a PL/SQL program to display the number of employees in each department using a nested while loop. Return department name and number of employees.
+DECLARE 
+v_department_name departments.department_name%type;
+v_department_id departments.department_id%type;
+
+v_employee_count NUMBER;
+
+v_employee_name employees.first_name%type;
+
+CURSOR c_department IS
+    SELECT department_id, department_name FROM departments
+    ORDER BY department_id;
+CURSOR c_employee(p_department_id IN departments.department_id%TYPE) IS
+    SELECT first_name FROM employees
+    WHERE employees.department_code = p_department_id;
+    
+BEGIN 
+    OPEN c_department;
+    FETCH c_department INTO v_department_id, v_department_name;
+    WHILE c_department%FOUND LOOP
+        v_employee_count := 0;
+        OPEN c_employee(v_department_id);
+        FETCH c_employee INTO v_employee_name;
+            WHILE c_employee%FOUND LOOP
+                v_employee_count := v_employee_count + 1;
+            FETCH c_employee INTO v_employee_name;
+            END LOOP;
+        CLOSE c_employee;
+        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_employee_count);
+        FETCH c_department INTO v_department_id, v_department_name;
+    END LOOP;
+    CLOSE c_department;
+END;
