@@ -262,3 +262,80 @@ BEGIN
     END LOOP;
     CLOSE c_department;
 END;
+--10. Write a PL/SQL program to display the employees who have the highest salary in each department using a nested while loop.
+DECLARE 
+v_department_name departments.department_name%type;
+v_department_id departments.department_id%type;
+
+v_employee_count NUMBER;
+
+v_employee_first_name employees.first_name%type;
+v_employee_last_name employees.last_name%type;
+v_salary employees.money%type;
+
+
+CURSOR c_department IS
+    SELECT department_id, department_name FROM departments
+    ORDER BY department_id;
+CURSOR c_employee(p_department_id IN departments.department_id%TYPE) IS
+    SELECT first_name, last_name, money FROM employees
+    WHERE employees.department_code = p_department_id
+    ORDER BY money DESC
+    FETCH FIRST 1 ROWS ONLY;
+    
+BEGIN 
+    OPEN c_department;
+    FETCH c_department INTO v_department_id, v_department_name;
+    WHILE c_department%FOUND LOOP
+        v_employee_count := 0;
+        OPEN c_employee(v_department_id);
+        FETCH c_employee INTO v_employee_first_name,v_employee_last_name,v_salary;
+            WHILE c_employee%FOUND LOOP
+                v_employee_count := v_employee_count + 1;
+            FETCH c_employee INTO v_employee_first_name,v_employee_last_name,v_salary;
+            END LOOP;
+        CLOSE c_employee;
+        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_employee_first_name || CHR(5) || v_employee_last_name || chr(9) || v_salary);
+        FETCH c_department INTO v_department_id, v_department_name;
+    END LOOP;
+    CLOSE c_department;
+END;
+
+--11. Write a PL/SQL program to display the employees who have the lowest salary in each department.
+DECLARE 
+v_department_name departments.department_name%type;
+v_department_id departments.department_id%type;
+
+v_employee_count NUMBER;
+
+v_employee_first_name employees.first_name%type;
+v_employee_last_name employees.last_name%type;
+v_salary employees.money%type;
+
+
+CURSOR c_department IS
+    SELECT department_id, department_name FROM departments
+    ORDER BY department_id;
+CURSOR c_employee(p_department_id IN departments.department_id%TYPE) IS
+    SELECT first_name, last_name, money FROM employees
+    WHERE employees.department_code = p_department_id
+    ORDER BY money
+    FETCH FIRST 1 ROWS ONLY;
+    
+BEGIN 
+    OPEN c_department;
+    FETCH c_department INTO v_department_id, v_department_name;
+    WHILE c_department%FOUND LOOP
+        v_employee_count := 0;
+        OPEN c_employee(v_department_id);
+        FETCH c_employee INTO v_employee_first_name,v_employee_last_name,v_salary;
+            WHILE c_employee%FOUND LOOP
+                v_employee_count := v_employee_count + 1;
+            FETCH c_employee INTO v_employee_first_name,v_employee_last_name,v_salary;
+            END LOOP;
+        CLOSE c_employee;
+        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_employee_first_name || CHR(5) || v_employee_last_name || chr(9) || v_salary);
+        FETCH c_department INTO v_department_id, v_department_name;
+    END LOOP;
+    CLOSE c_department;
+END;
