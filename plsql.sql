@@ -334,7 +334,7 @@ BEGIN
             FETCH c_employee INTO v_employee_first_name,v_employee_last_name,v_salary;
             END LOOP;
         CLOSE c_employee;
-        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_employee_first_name || CHR(5) || v_employee_last_name || chr(9) || v_salary);
+        DBMS_OUTPUT.PUT_LINE(v_department_id || CHR(9) || v_department_name || CHR(9) || v_employee_first_name || CHR(9) || v_employee_last_name || chr(9) || v_salary);
         FETCH c_department INTO v_department_id, v_department_name;
     END LOOP;
     CLOSE c_department;
