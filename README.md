@@ -10,17 +10,29 @@ Commands:
   1. Write a PL/SQL program to display the names of all departmenst.
      ----------------------------------------------------------------------
      księgowość
+     
      produkcja
+     
      administracja
+     
      IT
+     
      Sprzedaż
+     
      planowanie i zakupy
+     
      hr
+     
      logistyka
+     
      badanie i rozwój
+     
      dział prawny
+     
      public relations
+     
      transport
+     
      ----------------------------------------------------------------------
   3. Write a PL/SQL program to display the employee IDs, names, and department names of all employees
   4. Write a PL/SQL program to display department_code and full name order by id
