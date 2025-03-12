@@ -339,3 +339,70 @@ BEGIN
     END LOOP;
     CLOSE c_department;
 END;
+
+-- Exception Handling
+--1.Write a PL/SQL block to handle the exception when a division by zero occurs.
+DECLARE 
+    v_result NUMBER;
+    BEGIN
+        v_result := 10/0;
+    EXCEPTION
+        WHEN ZERO_DIVIDE THEN
+            DBMS_OUTPUT.PUT_LINE('FAULT - DIVISION BY 0!');
+END;
+/
+--2. Handle the NO_DATA_FOUND exception when retrieving a row from a table and no matching record is found.
+DECLARE 
+    v_result NUMBER;
+    v_employees employees%ROWTYPE;
+    BEGIN
+        v_result := 23;
+        
+        SELECT * into v_employees FROM EMPLOYEES WHERE ID = v_result;
+        
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('NO DATA FOUND');
+END;
+/
+
+--3. Handle the TOO_MANY_ROWS exception when retrieving multiple rows instead of a single row from a table.
+DECLARE 
+    v_employees employees%ROWTYPE;
+    BEGIN
+        SELECT * into v_employees FROM EMPLOYEES;
+        
+    EXCEPTION
+        WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS');
+END;
+/
+DECLARE 
+    v_dep_id employees.department_code%TYPE := 9;
+    v_employees_id employees.id%type;
+    v_employees_first_name employees.first_name%type;
+    v_employees_last_name employees.first_name%type;
+
+    BEGIN
+        SELECT id,first_name,last_name into v_employees_id, v_employees_first_name, v_employees_last_name
+        FROM EMPLOYEES
+        WHERE department_code = v_dep_id;
+        
+    EXCEPTION
+        WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('TOO MANY ROWS');
+END;
+/
+
+--4. Handle the INVALID_NUMBER exception when converting a non-numeric value to a number.
+DECLARE 
+    v_result NUMBER;
+    BEGIN
+        SELECT TO_NUMBER('123a') INTO v_result FROM dual;
+        
+    EXCEPTION
+        WHEN INVALID_NUMBER THEN
+            DBMS_OUTPUT.PUT_LINE('INVALID NUMBER');
+END;
+/
+
