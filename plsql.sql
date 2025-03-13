@@ -406,3 +406,112 @@ DECLARE
 END;
 /
 
+
+-- DYNAMIC SQL
+
+--  DYNAMIC TABLE CREATE (CREATE TABLE)
+BEGIN 
+    EXECUTE IMMEDIATE 'CREATE TABLE test_dynamic_sql (id NUMBER, name VARCHAR2(50))';
+    DBMS_OUTPUT.PUT_LINE('TABLE IS CREATE');
+EXCEPTION
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('FAULT:  '  || SQLERRM);
+END;
+/
+
+SELECT * FROM user_tables WHERE table_name = 'test_dynamic_sql';
+
+-- DYNAMIC INSERT WITH PARAMETERS(USIGN)
+DECLARE 
+    v_sql VARCHAR2(200);
+BEGIN
+    v_sql := 'INSERT INTO test_dynamic_sql(id, name) VALUES (:1, :2)';
+    EXECUTE IMMEDIATE v_sql USING 1, 'Tom Jones';
+    DBMS_OUTPUT.PUT_LINE('DATA IS ADD');
+END;
+/
+
+select * from test_dynamic_sql;
+
+-- DYNAMIC SELECT INTO
+DECLARE
+    v_name VARCHAR2(50);
+BEGIN
+    EXECUTE IMMEDIATE 'SELECT name FROM test_dynamic_sql WHERE id =1' 
+    into v_name;
+    DBMS_OUTPUT.PUT_LINE('NAME: ' || v_name);
+END;
+/
+    
+-- DYNAMIC UPDATE
+DECLARE
+    v_sql VARCHAR2(200);
+BEGIN
+    v_sql := 'UPDATE test_dynamic_sql SET name = :1 WHERE id = :2';
+    EXECUTE IMMEDIATE v_sql USING 'New name', 1;
+    DBMS_OUTPUT.PUT_LINE('The data has been updated.');
+END;
+/
+
+-- DYNAMIC DROP TABLE
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE test_dynamic_sql';
+    dbms_output.put_line('the table has been deleted.');
+    EXCEPTION
+        WHEN OTHERS THEN
+        dbms_output.put_line('FAULT:  ' || SQLERRM);
+END;
+/
+
+-- 2
+--  DYNAMIC TABLE CREATE (CREATE TABLE)
+BEGIN 
+    EXECUTE IMMEDIATE 'CREATE TABLE MY_TABLE_2025 (id NUMBER, description VARCHAR2(100))';
+    DBMS_OUTPUT.PUT_LINE('TABLE IS CREATE');
+EXCEPTION
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('FAULT:  '  || SQLERRM);
+END;
+/
+
+-- DYNAMIC INSERT WITH PARAMETERS(USIGN)
+DECLARE 
+    v_sql VARCHAR2(200);
+BEGIN
+    v_sql := 'INSERT INTO MY_TABLE_2025(id, description) VALUES (:1, :2)';
+    EXECUTE IMMEDIATE v_sql USING 1, 'created second table in dynamic sql';
+    DBMS_OUTPUT.PUT_LINE('DATA IS ADD');
+END;
+/
+
+select * from MY_TABLE_2025;
+
+-- DYNAMIC SELECT INTO
+DECLARE
+    v_description VARCHAR2(100);
+BEGIN
+    EXECUTE IMMEDIATE 'SELECT description FROM MY_TABLE_2025 WHERE id =1' 
+    into v_description;
+    DBMS_OUTPUT.PUT_LINE('description: ' || v_description);
+END;
+/
+
+-- DYNAMIC UPDATE
+DECLARE
+    v_sql VARCHAR2(200);
+BEGIN
+    v_sql := 'UPDATE MY_TABLE_2025 SET description = :1 WHERE id = :2';
+    EXECUTE IMMEDIATE v_sql USING 'New description', 1;
+    DBMS_OUTPUT.PUT_LINE('The data has been updated.');
+END;
+/
+-- DYNAMIC DROP TABLE
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE MY_TABLE_2025';
+    dbms_output.put_line('the table has been deleted.');
+    EXCEPTION
+        WHEN OTHERS THEN
+        dbms_output.put_line('FAULT:  ' || SQLERRM);
+END;
+/
+
