@@ -24,3 +24,10 @@ Commands:
   2. Handle the NO_DATA_FOUND exception when retrieving a row from a table and no matching record is found.
   3. Handle the TOO_MANY_ROWS exception when retrieving multiple rows instead of a single row from a table.
   4. Handle the INVALID_NUMBER exception when converting a non-numeric value to a number.
+
+  DYNAMIC SQL
+  1. Dynamic create table
+  2. dynamic INSERT with parameters (USING)
+  3. Dynamic SELECT INTO
+  4. Dynamic UPDATE
+  5. Dynamic DROP TABLE
