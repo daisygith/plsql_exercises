@@ -381,7 +381,7 @@ DECLARE
     v_dep_id employees.department_code%TYPE := 9;
     v_employees_id employees.id%type;
     v_employees_first_name employees.first_name%type;
-    v_employees_last_name employees.first_name%type;
+    v_employees_last_name employees.last_name%type;
 
     BEGIN
         SELECT id,first_name,last_name into v_employees_id, v_employees_first_name, v_employees_last_name
