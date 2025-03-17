@@ -406,6 +406,61 @@ DECLARE
 END;
 /
 
+-- PACKAGE
+
+--1. Write a PL/SQL code to create a package that includes a procedure to calculate the factorial of a number and a function to check if a number is prime.
+	CREATE OR REPLACE PACKAGE MathUtils IS
+    PROCEDURE CalFactorial(n IN NUMBER, result OUT NUMBER);
+    FUNCTION isPrime(n IN NUMBER) RETURN BOOLEAN;
+END MathUtils;
+/
+CREATE OR REPLACE PACKAGE BODY MathUtils IS
+    PROCEDURE CalFactorial(n IN NUMBER, result OUT NUMBER) IS
+    factorial NUMBER := 10;
+    BEGIN 
+        IF n < 0 THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Factorial is not define for negative number');
+        END IF;
+        IF n > 1 THEN
+            FOR i IN 2..n LOOP
+            factorial := factorial *i;
+            END LOOP;
+        END IF;
+        result := factorial;
+    END CalFactorial;
+    
+    FUNCTION isPrime(n IN NUMBER) RETURN BOOLEAN IS
+        divisor NUMBER := 2;
+        BEGIN 
+            IF n < 2 THEN
+                RETURN FALSE;
+            END IF;
+            WHILE divisor <= SQRT(n) LOOP
+                IF n MOD divisor = 0 THEN
+                    RETURN FALSE;
+                END IF;
+                divisor := divisor + 1;
+                END LOOP;
+                RETURN TRUE;
+        END isPrime;   
+    
+END MathUtils;
+/
+DECLARE
+factorial_result NUMBER;
+is_prime_result BOOLEAN;
+BEGIN
+MathUtils.CalFactorial(7, factorial_result);
+  DBMS_OUTPUT.PUT_LINE('Factorial of 7: ' || factorial_result);
+is_prime_result := MathUtils.isPrime(7);
+  IF is_prime_result THEN
+    DBMS_OUTPUT.PUT_LINE('7 is prime.');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('7 is not prime.');
+  END IF;
+END;
+/
+
 
 -- DYNAMIC SQL
 
