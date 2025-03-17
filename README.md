@@ -25,6 +25,9 @@ Commands:
   3. Handle the TOO_MANY_ROWS exception when retrieving multiple rows instead of a single row from a table.
   4. Handle the INVALID_NUMBER exception when converting a non-numeric value to a number.
 
+  PACKAGE
+  1. Write a PL/SQL code to create a package that includes a procedure to calculate the factorial of a number and a function to check if a number is prime.
+
   DYNAMIC SQL
   1. Dynamic create table
   2. dynamic INSERT with parameters (USING)
